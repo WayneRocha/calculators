@@ -126,9 +126,15 @@ aside{
 button img{
     width: 32px;
 }
-button:last-child{
+#equalityBtn{
     background-color: orange;
     font-weight: 700;
+}
+.parentheses{
+    display: flex;
+}
+.parentheses button{
+    width: 50%;
 }
 
 /*-----resposivity------*/
