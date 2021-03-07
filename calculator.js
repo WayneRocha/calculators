@@ -73,50 +73,68 @@ function calculator(isKeyboardEvent = false, key = '') {
 
     function calculateResult() {
         let expression = createReversePolishNotation();
-        if(expression == undefined){
-            console.log('calc error :(');
-        }
-        result = resolveReversePolishNotation(expression);
+        result = solveReversePolishNotation(expression);
+        console.log(result);
 
         function createReversePolishNotation() {
             let expression = expressionToArray(accountCalc);
-            let stack = new Array;
-            let operatorStack = new Array;
 
-            //Shunting-yard Algorithm
-            while (expression.length > 0) {
-                let token = expression[0];
+            expression = infixToPostFix(expression);
+            return expression;
 
-                if (typeof(token) == 'number') {
-                    stack.push(expression.shift());
-                }
-                else if (isOperator(token, true)) {
-                    while (isOperator(operatorStack[operatorStack.length - 1], true) && DoHaveMorePrecendence(operatorStack[operatorStack.length - 1], token)) {
-                        stack.push(operatorStack.pop());
+            function infixToPostFix(exp) {
+                //Shunting-yard Algorithm in JS by Nic Raboy
+
+                var outputQueue = [];
+                var operatorStack = [];
+                var operators = {
+                    "^": {
+                        precedence: 4,
+                        associativity: "Right"
+                    },
+                    "/": {
+                        precedence: 3,
+                        associativity: "Left"
+                    },
+                    "*": {
+                        precedence: 3,
+                        associativity: "Left"
+                    },
+                    "+": {
+                        precedence: 2,
+                        associativity: "Left"
+                    },
+                    "-": {
+                        precedence: 2,
+                        associativity: "Left"
                     }
-                    operatorStack.push(expression.shift());
                 }
-                else if (token == '('){
-                    operatorStack.push(expression.shift());
-                }else if (token == ')'){
-                    while (operatorStack[operatorStack.length - 1] != '('){
-                        if (operatorStack.length == 0){
-                            return;
+                for(var i = 0; i < exp.length; i++) {
+                    var token = exp[i];
+                    if(typeof(token) == 'number') {
+                        outputQueue.push(token);
+                    } else if("^*/+-".indexOf(token) !== -1) {
+                        var o1 = token;
+                        var o2 = operatorStack[operatorStack.length - 1];
+                        while("^*/+-".indexOf(o2) !== -1 && ((operators[o1].associativity === "Left" && operators[o1].precedence <= operators[o2].precedence) || (operators[o1].associativity === "Right" && operators[o1].precedence < operators[o2].precedence))) {
+                            outputQueue.push(operatorStack.pop());
+                            o2 = operatorStack[operatorStack.length - 1];
                         }
-                        stack.push(operatorStack.pop());
+                        operatorStack.push(o1);
+                    } else if(token === "(") {
+                        operatorStack.push(token);
+                    } else if(token === ")") {
+                        while(operatorStack[operatorStack.length - 1] !== "(") {
+                            outputQueue.push(operatorStack.pop());
+                        }
+                        operatorStack.pop();
                     }
-                    operatorStack.pop();
                 }
-            }
-            while (operatorStack.length > 0){
-                if (operatorStack[operatorStack.length - 1] == '(' || operatorStack[operatorStack.length - 1] == ')'){
-                    return;
+                while(operatorStack.length > 0) {
+                    outputQueue.push(operatorStack.pop());
                 }
-                stack.push(operatorStack.pop());
+                return outputQueue;
             }
-
-            return stack;
-
             function expressionToArray(val) {
                 let numberElements = new Array;
                 let stack = new Array;
@@ -155,12 +173,16 @@ function calculator(isKeyboardEvent = false, key = '') {
                         }
                     }
                 }
-
                 return stack;
             }
         }
-        function resolveReversePolishNotation(expression) {
-            return;
+        function solveReversePolishNotation(exp) {
+            let finalResult = 0;
+
+            for(let i = 0; i < exp.length; i++){
+                //solve
+            }
+            return finalResult;
         }
     }
     function normalizeExpression(exp) {
@@ -211,8 +233,17 @@ function calculator(isKeyboardEvent = false, key = '') {
             return val == '+' || val == '-' || val == 'x' || val == '÷';
         }
     }
-    function DoHaveMorePrecendence(val1, val2){
+    function doHaveMorePrecendence(val1, val2){
+        console.log(val1 + "Have more precendence than " + val2 + ": " + ((val1 == '*' || val1 == '/') && (val2 == '-' || val2 == '+')));
+
         return (val1 == '*' || val1 == '/') && (val2 == '-' || val2 == '+');
+    }
+    function dohaveEqualityPrecendence(val1, val2){
+        console.log(val1 + " and " + val2 + " have more precendence: " + ((val1 == '*' || val1 == '/') && (val2 == '*' || val2 == '/') ||
+        (val1 == '+' || val1 == '-') && (val2 == '+' || val2 == '-')));
+
+        return ((val1 == '*' || val1 == '/') && (val2 == '*' || val2 == '/') ||
+            (val1 == '+' || val1 == '-') && (val2 == '+' || val2 == '-'));
     }
     function refreshVisor(cleanAccount = false, cleanResult = false, resultIsTithe = false) {
         const visorAccount = document.getElementById('calc');
