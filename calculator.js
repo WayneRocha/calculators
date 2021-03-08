@@ -73,8 +73,9 @@ function calculator(isKeyboardEvent = false, key = '') {
 
     function calculateResult() {
         let expression = createReversePolishNotation();
+        console.log('expression: ' + expression);
         result = solveReversePolishNotation(expression);
-        console.log(result);
+        console.log('result: ' + result);
 
         function createReversePolishNotation() {
             let expression = expressionToArray(accountCalc);
@@ -109,29 +110,37 @@ function calculator(isKeyboardEvent = false, key = '') {
                         associativity: "Left"
                     }
                 }
-                for(var i = 0; i < exp.length; i++) {
+                for (var i = 0; i < exp.length; i++) {
                     var token = exp[i];
-                    if(typeof(token) == 'number') {
+                    if (typeof (token) == 'number') {
                         outputQueue.push(token);
-                    } else if("^*/+-".indexOf(token) !== -1) {
+                    } else if ("^*/+-".indexOf(token) !== -1) {
                         var o1 = token;
                         var o2 = operatorStack[operatorStack.length - 1];
-                        while("^*/+-".indexOf(o2) !== -1 && ((operators[o1].associativity === "Left" && operators[o1].precedence <= operators[o2].precedence) || (operators[o1].associativity === "Right" && operators[o1].precedence < operators[o2].precedence))) {
+                        while ("^*/+-".indexOf(o2) !== -1 && ((operators[o1].associativity === "Left" && operators[o1].precedence <= operators[o2].precedence) || (operators[o1].associativity === "Right" && operators[o1].precedence < operators[o2].precedence))) {
                             outputQueue.push(operatorStack.pop());
                             o2 = operatorStack[operatorStack.length - 1];
                         }
                         operatorStack.push(o1);
-                    } else if(token === "(") {
+                    } else if (token === "(") {
                         operatorStack.push(token);
-                    } else if(token === ")") {
-                        while(operatorStack[operatorStack.length - 1] !== "(") {
-                            outputQueue.push(operatorStack.pop());
+                    } else if (token === ")") {
+                        while (operatorStack[operatorStack.length - 1] !== "(") {
+                            if (operatorStack.length !== 0){
+                                outputQueue.push(operatorStack.pop());
+                            } else {
+                                break;
+                            }
                         }
                         operatorStack.pop();
                     }
                 }
-                while(operatorStack.length > 0) {
-                    outputQueue.push(operatorStack.pop());
+                while (operatorStack.length > 0) {
+                    if (operatorStack[operatorStack.length - 1] !== '(' || operatorStack[operatorStack.length - 1] !== ')'){
+                        outputQueue.push(operatorStack.pop());
+                    } else {
+                        break;
+                    }
                 }
                 return outputQueue;
             }
@@ -139,7 +148,7 @@ function calculator(isKeyboardEvent = false, key = '') {
                 let numberElements = new Array;
                 let stack = new Array;
 
-                for (let i = 0; i <= val.length - 1; i++) {
+                for (let i = 0; i < val.length; i++) {
                     let isNumericOrDot = (Number.isInteger(parseInt(val[i]))) || (val[i] === '.');
 
                     if (isNumericOrDot) {
@@ -177,12 +186,34 @@ function calculator(isKeyboardEvent = false, key = '') {
             }
         }
         function solveReversePolishNotation(exp) {
-            let finalResult = 0;
+            let stack = [];
+            let token;
 
-            for(let i = 0; i < exp.length; i++){
-                //solve
+            while (exp.length > 0){
+                token = exp.shift();
+
+                switch(token){
+                    case '^':
+                        stack.push((stack.pop()) ** (stack.pop()));
+                        break;
+                    case '*':
+                        stack.push((stack.pop()) * (stack.pop()));
+                        break;
+                    case '/':
+                        stack.push((stack.pop()) / (stack.pop()));
+                        break;
+                    case '+':
+                        stack.push((stack.pop()) + (stack.pop()));
+                        break;
+                    case '-':
+                        stack.push((stack.pop()) - (stack.pop()));
+                        break;
+                    default:
+                        stack.push(token);
+                        break;
+                }
             }
-            return finalResult;
+            return stack;
         }
     }
     function normalizeExpression(exp) {
@@ -232,18 +263,6 @@ function calculator(isKeyboardEvent = false, key = '') {
         } else {
             return val == '+' || val == '-' || val == 'x' || val == '÷';
         }
-    }
-    function doHaveMorePrecendence(val1, val2){
-        console.log(val1 + "Have more precendence than " + val2 + ": " + ((val1 == '*' || val1 == '/') && (val2 == '-' || val2 == '+')));
-
-        return (val1 == '*' || val1 == '/') && (val2 == '-' || val2 == '+');
-    }
-    function dohaveEqualityPrecendence(val1, val2){
-        console.log(val1 + " and " + val2 + " have more precendence: " + ((val1 == '*' || val1 == '/') && (val2 == '*' || val2 == '/') ||
-        (val1 == '+' || val1 == '-') && (val2 == '+' || val2 == '-')));
-
-        return ((val1 == '*' || val1 == '/') && (val2 == '*' || val2 == '/') ||
-            (val1 == '+' || val1 == '-') && (val2 == '+' || val2 == '-'));
     }
     function refreshVisor(cleanAccount = false, cleanResult = false, resultIsTithe = false) {
         const visorAccount = document.getElementById('calc');
