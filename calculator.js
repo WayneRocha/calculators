@@ -274,7 +274,7 @@ function calculator(isKeyboardEvent = false, key = '') {
         if (cleanAccount) {
             account = '';
         }
-        if (result != undefined) {
+        if (result != undefined && !(isNaN(result))) {
             visorResult.innerText = result;
             if (resultIsTithe) {
                 visorResult.innerText += '... ';
