@@ -33,7 +33,6 @@ function calculator(isKeyboardEvent = false, key = '') {
         let isCommaBtn = btnContent == ',';
         let isParenthesesBtn = btnContent == '(' || btnContent == ')';
         let isEqualityOperatorBtn = btnContent == '=';
-        let resultIsTithe = false;
 
         if (isNumericBtn) {
             account += btnContent;
@@ -68,7 +67,7 @@ function calculator(isKeyboardEvent = false, key = '') {
         else {
             refreshVisor(false, true);
         }
-        refreshVisor(false, false, resultIsTithe);
+        refreshVisor(false, false);
     }
 
     function calculateResult() {
@@ -191,22 +190,33 @@ function calculator(isKeyboardEvent = false, key = '') {
 
             while (exp.length > 0){
                 token = exp.shift();
+                let val1, val2;
 
                 switch(token){
                     case '^':
-                        stack.push((stack.pop()) ** (stack.pop()));
+                        val1 = stack.pop();
+                        val2 = stack.pop();
+                        stack.push(val2 ** va12);
                         break;
                     case '*':
-                        stack.push((stack.pop()) * (stack.pop()));
+                        val1 = stack.pop();
+                        val2 = stack.pop();
+                        stack.push(val2 * val1);
                         break;
                     case '/':
-                        stack.push((stack.pop()) / (stack.pop()));
+                        val1 = stack.pop();
+                        val2 = stack.pop();
+                        stack.push(val2 / val1);
                         break;
                     case '+':
-                        stack.push((stack.pop()) + (stack.pop()));
+                        val1 = stack.pop();
+                        val2 = stack.pop();
+                        stack.push(val2 + val1);
                         break;
                     case '-':
-                        stack.push((stack.pop()) - (stack.pop()));
+                        val1 = stack.pop();
+                        val2 = stack.pop();
+                        stack.push(val2 - val1);
                         break;
                     default:
                         stack.push(token);
@@ -264,7 +274,7 @@ function calculator(isKeyboardEvent = false, key = '') {
             return val == '+' || val == '-' || val == 'x' || val == '÷';
         }
     }
-    function refreshVisor(cleanAccount = false, cleanResult = false, resultIsTithe = false) {
+    function refreshVisor(cleanAccount = false, cleanResult = false) {
         const visorAccount = document.getElementById('calc');
         const visorResult = document.getElementById('result');
 
@@ -276,9 +286,6 @@ function calculator(isKeyboardEvent = false, key = '') {
         }
         if (result != undefined && !(isNaN(result))) {
             visorResult.innerText = result;
-            if (resultIsTithe) {
-                visorResult.innerText += '... ';
-            }
         }
         else {
             visorResult.innerText = '';
