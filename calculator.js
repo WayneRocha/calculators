@@ -72,9 +72,7 @@ function calculator(isKeyboardEvent = false, key = '') {
 
     function calculateResult() {
         let expression = createReversePolishNotation();
-        console.log('expression: ' + expression);
         result = solveReversePolishNotation(expression);
-        console.log('result: ' + result);
 
         function createReversePolishNotation() {
             let expression = expressionToArray(accountCalc);
@@ -125,7 +123,7 @@ function calculator(isKeyboardEvent = false, key = '') {
                         operatorStack.push(token);
                     } else if (token === ")") {
                         while (operatorStack[operatorStack.length - 1] !== "(") {
-                            if (operatorStack.length !== 0){
+                            if (operatorStack.length !== 0) {
                                 outputQueue.push(operatorStack.pop());
                             } else {
                                 break;
@@ -135,7 +133,7 @@ function calculator(isKeyboardEvent = false, key = '') {
                     }
                 }
                 while (operatorStack.length > 0) {
-                    if (operatorStack[operatorStack.length - 1] !== '(' || operatorStack[operatorStack.length - 1] !== ')'){
+                    if (operatorStack[operatorStack.length - 1] !== '(' || operatorStack[operatorStack.length - 1] !== ')') {
                         outputQueue.push(operatorStack.pop());
                     } else {
                         break;
@@ -188,11 +186,11 @@ function calculator(isKeyboardEvent = false, key = '') {
             let stack = [];
             let token;
 
-            while (exp.length > 0){
+            while (exp.length > 0) {
                 token = exp.shift();
                 let val1, val2;
 
-                switch(token){
+                switch (token) {
                     case '^':
                         val1 = stack.pop();
                         val2 = stack.pop();
@@ -223,7 +221,7 @@ function calculator(isKeyboardEvent = false, key = '') {
                         break;
                 }
             }
-            return stack;
+            return eval(stack.join(''));
         }
     }
     function normalizeExpression(exp) {
@@ -251,13 +249,13 @@ function calculator(isKeyboardEvent = false, key = '') {
     }
     function noRepeatedComma() {
         let lastArgumentOfAccont = account.substr(account.length - 1, 1);
-        
+
         return !(lastArgumentOfAccont == ',' && btnContent == ',');
     }
     function isLastValueValid() {
         let lastArgumentOfAccont = account.substr(account.length - 1, 1);
 
-        isValid = (!isOperator(lastArgumentOfAccont) && lastArgumentOfAccont != '(') && lastArgumentOfAccont != ',';
+        isValid = (!isOperator(lastArgumentOfAccont) && lastArgumentOfAccont != '(') && lastArgumentOfAccont != ',' && Number.isInteger(parseInt(lastArgumentOfAccont));
 
         if (isValid) {
             return true;
@@ -285,18 +283,21 @@ function calculator(isKeyboardEvent = false, key = '') {
             account = '';
         }
         if (result != undefined && !(isNaN(result))) {
-            visorResult.innerText = result;
+            if (Number.isInteger(result) || !((result % 1).toString().length >= 6)) {
+                visorResult.innerText = result.toString().replace(/\./g, ',');
+            } else {
+                visorResult.innerText = (result.toFixed(4)).replace(/\./g, ',') + '...';
+            }
         }
         else {
             visorResult.innerText = '';
         }
-
         visorAccount.innerText = account;
     }
 }
 function KeyboardListener(key) {
     let keyPressed = key.key;
-    const validKey = Number.isInteger(parseInt(keyPressed)) ||
+    let validKey = Number.isInteger(parseInt(keyPressed)) ||
         keyPressed == '+' ||
         keyPressed == '-' ||
         keyPressed == '*' ||
