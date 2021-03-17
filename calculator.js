@@ -1,4 +1,4 @@
-var accountCalc = '';
+var accountCalc;
 var account = '';
 var result;
 
