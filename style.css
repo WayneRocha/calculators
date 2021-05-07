@@ -1,4 +1,9 @@
 @charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;1,100;1,200;1,300;1,400&display=swap');
+
+:root{
+    --calculator-font: 'Montserrat', sans-serif;
+}
 
 /*---------header---------*/
 header{
@@ -84,6 +89,7 @@ aside{
     align-items: center;
 }
 table{
+    font-family: var(--calculator-font);
 	background-color:#fff;
 	border:2px #fff solid;
 }
@@ -95,14 +101,28 @@ tr:first-child td{
 }
 td{
 	background-color:#e6e6e6;
+    font-size: 1.1em;
 	padding:20px 40px;
+}
+.collapse-text{
+    font-size: 0px;
+}
+#erase, #erase-all{
+    background-repeat:no-repeat;
+    background-size: 30%;
+    background-position: center;
+}
+#erase{
+    background-image: url(img/backspace.svg);
+}
+#erase-all{
+    background-image: url(img/delete-all.svg);
 }
 td:not(#result){
 	cursor:pointer;
 }
 #result{
 	font-size:1.3rem;
-	font-family:Courier,monospace;
 	text-align:end;
 }
 td:hover{
