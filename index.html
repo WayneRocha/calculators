@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
-    <script defer src="calculator.js"></script>
+    <script defer src="js/math.js"></script>
+    <script defer src="js/index.js"></script>
     <title>Calculator</title>
 </head>
 <body>
@@ -44,44 +45,42 @@
     </header>
     <div id="content">
         <main>
-            <section id="calculator">
-                <div id="calculator-body">
-                    <div id="visor">
-                        <span id="visor-content">
-                            <span id="calc"></span>
-                            <span id="result"></span>
-                        </span>
-                    </div>
-                    <div id="buttons">
-                        <div class="empty"></div>
-                        <button class="calc-btn" id="delete-all">
-                            <img src="img/delete-all.svg" title="Apagar Tudo">
-                        </button>
-                        <button class="calc-btn" id="delete">
-                            <img src="img/backspace.svg" title="Apagar">
-                        </button>
-                        <button class="calc-btn">÷</button>
-                        <button class="calc-btn">7</button>
-                        <button class="calc-btn">8</button>
-                        <button class="calc-btn">9</button>
-                        <button class="calc-btn">x</button>
-                        <button class="calc-btn">4</button>
-                        <button class="calc-btn">5</button>
-                        <button class="calc-btn">6</button>
-                        <button class="calc-btn">-</button>
-                        <button class="calc-btn">1</button>
-                        <button class="calc-btn">2</button>
-                        <button class="calc-btn">3</button>
-                        <button class="calc-btn">+</button>
-                        <button class="calc-btn">0</button>
-                        <button class="calc-btn">,</button>
-                        <div class="parentheses">
-                            <button class="calc-btn">(</button>
-                            <button class="calc-btn">)</button>
-                        </div>
-                        <button class="calc-btn" id="equalityBtn">=</button>
-                    </div>
-                </div>
+            <section id="calculator-section">
+                <table id="calculadora">
+                    <tr>
+                        <td colspan="4" id="result"></td>
+                    </tr>
+                    <tr>
+                        <td>(</td>
+                        <td>)</td>
+                        <td id="erase">&lt;</td>
+                        <td id="erase-all">AC</td>
+                    </tr>
+                    <tr>
+                        <td>7</td>
+                        <td>8</td>
+                        <td>9</td>
+                        <td>÷</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>5</td>
+                        <td>6</td>
+                        <td>x</td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>2</td>
+                        <td>3</td>
+                        <td>-</td>
+                    </tr>
+                    <tr>
+                        <td>0</td>
+                        <td>,</td>
+                        <td>=</td>
+                        <td>+</td>
+                    </tr>
+                </table>
             </section>
             <section id="geometry">
                 <nav>
