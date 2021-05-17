@@ -1,0 +1,133 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;1,100;1,200;1,300;1,400&display=swap');
+
+:root{
+    --calculator-font: 'Montserrat', sans-serif;
+}
+
+/*---------header---------*/
+header{
+    width: 100vw;
+    height: 10vh;
+    background-color: #3D3D3D;
+    display: flex;
+    flex-direction: row;
+}
+#title{
+    height: 100%;
+    width: 50vw;
+    display: flex;
+    align-items: center;
+    padding-inline-start: 2vw;
+}
+#title h1{
+    font-size: 6vmin;
+    white-space: nowrap;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+}
+
+/*----------screen-content----------*/
+
+main{
+    float: left;
+    width: 70%;
+    height: 90vh;
+    background-color: #212121;
+    overflow-x: hidden;
+    display: flex;
+}
+section{
+    display: flex;
+    min-width: 100%;
+    height: 100%;
+}
+aside{
+    float: right;
+    width: 30%;
+    height: 90vh;
+    background-color: #4b4b4b;
+
+}
+
+/*calculator*/
+
+#calculator-section{
+    display: inherit;
+    justify-content: center;
+    align-items: center;
+}
+table{
+    font-family: var(--calculator-font);
+	background-color:#fff;
+	border:2px #fff solid;
+}
+tr:first-child td{
+	background-color:#f9fafa;
+	width:100%;
+	height:20px;
+	padding-bottom:70px;
+}
+td{
+	background-color:#e6e6e6;
+    font-size: 1.1em;
+	padding:20px 40px;
+}
+.collapse-text{
+    font-size: 0px;
+}
+#erase, #erase-all{
+    background-repeat:no-repeat;
+    background-size: 30%;
+    background-position: center;
+}
+#erase{
+    background-image: url(../img/backspace.svg);
+}
+#erase-all{
+    background-image: url(../img/delete-all.svg);
+}
+td:not(#result){
+	cursor:pointer;
+}
+#result{
+	font-size:1.3rem;
+	text-align:end;
+}
+td:hover{
+	background-color:#bde6f6;
+}
+
+/*-----resposivity------*/
+
+@media(orientation: portrait){
+    /*header*/
+    #social-medias nav li a svg{
+        width: 7vmin;
+        height: 7vmin;
+    }
+    
+    /*screen layout*/
+    #content{
+        display: flex;
+        flex-direction: column;
+    }
+    main{
+        float: initial;
+        width: 100%;
+        height: 80vh;
+        background-color: #212121;
+        overflow-x: hidden;
+        display: flex;
+    }
+    aside{
+        float: initial;
+        width: 100%;
+        height: 10vh;
+    }
+
+    /*calculator*/
+    #calculator-body{
+        width: 70%;
+    }
+}
